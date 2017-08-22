@@ -1,0 +1,62 @@
+<script src="../assets/jquery.min.js"></script>
+<script src="../assets/Jcrop.js"></script>
+<link rel="stylesheet" type="text/css" href="../assets/Jcrop.css">
+
+<form action="new" method="post" enctype="multipart/form-data" id="form1" runat="server">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input type='file' id="image-input" name="avatar"/>
+  <input type="hidden" name="cropx" id="cropx" value="0"/>
+  <input type="hidden" name="cropy" id="cropy" value="0"/>
+  <input type="hidden" name="cropw" id="cropw" value="0"/>
+  <input type="hidden" name="croph" id="croph" value="0"/>
+  <input type="submit" value="ok">
+</form>
+<img id="image_preview" src="#" alt="your image"/>
+<script>
+    $(document).ready(function () {
+        $('#image_preview').Jcrop({
+            aspectRatio: 1,
+            setSelect: [175, 100, 400, 300],
+            maxSize: [200, 200],
+            onSelect: showCoords,
+            onChange: showCoords
+
+        });
+
+        function showCoords(c) {
+            document.getElementById("cropx").value = c.x;
+            document.getElementById("cropy").value = c.y;
+            document.getElementById("cropw").value = c.w;
+            document.getElementById("croph").value = c.h;
+//            console.log("x" + c.x)
+//            console.log("y" + c.y)
+//            console.log("w" + c.w)
+//            console.log("h" + c.h)
+//            console.log(">>>>>>>><<<<<<<<<<<<<<")
+//            // variables can be accessed here as
+//            // c.x, c.y, c.x2, c.y2, c.w, c.h
+        };
+
+
+    })
+
+</script>
+
+<script>
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image_preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#image-input").change(function () {
+        readURL(this);
+    });
+</script>
